@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const puppeteer = require('puppeteer');
 const debug = require('debug')('app:index');
@@ -29,8 +30,8 @@ app.listen(PORT, async () => {
       ],
     });
     const page = await browser.newPage();
-    await page.goto('https://example.com');
-    await page.screenshot({ path: `${dir}/example.png` });
+    await page.goto('https://www.instagram.com/');
+    await page.screenshot({ path: `${dir}/instagram.png` });
   
     await browser.close();
   })();
