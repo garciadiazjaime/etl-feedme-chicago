@@ -16,18 +16,21 @@ app.get('/', function (req, res) {
 app.listen(PORT, async () => {
   debug(`Listening on ${PORT}`);
 
+  const dir = './public';
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+
   (async () => {
     const browser = await puppeteer.launch({
-      headless: true,
       args: [
         '--no-sandbox',
         '--disable-gpu',
-        '--headless',
       ],
     });
     const page = await browser.newPage();
     await page.goto('https://example.com');
-    await page.screenshot({ path: './public/example.png' });
+    await page.screenshot({ path: `${dir}/example.png` });
   
     await browser.close();
   })();
