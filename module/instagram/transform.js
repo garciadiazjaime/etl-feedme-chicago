@@ -1,7 +1,5 @@
-const fs = require('fs');
+const debug = require('debug')('app:transform');
 const jsdom = require('jsdom');
-
-const debug = require('debug')('app:posts-from-hashtag');
 
 const { JSDOM } = jsdom;
 
@@ -21,7 +19,7 @@ function getImage(media) {
   return null;
 }
 
-function extractPosts({ recent }, hashtag) {
+function getPostsFromData({ recent }, hashtag) {
   if (!Array.isArray(recent.sections) || !recent.sections.length) {
     return null;
   }
@@ -43,30 +41,7 @@ function extractPosts({ recent }, hashtag) {
   return items;
 }
 
-async function postsFromHashtag(hashtag, page, publicPath) {
-  await page.goto(`https://www.instagram.com/explore/tags/${hashtag}/`);
-  await page.waitForTimeout(2000);
-
-  const html = await page.content();
-
-  if (!html) {
-    return debug('NO_HTML');
-  }
-
-  fs.writeFileSync(`${publicPath}/posts-from-hashtag-01.html`, html);
-
-  if (html.includes('Oops, an error occurred')) {
-    return debug('ERROR');
-  }
-
-  if (html.includes('Login • Instagram')) {
-    return debug('LOGIN_REQUIRED');
-  }
-
-  if (html.includes('Content Unavailable') || html.includes('Page Not Found • Instagram')) {
-    return debug('CONTENT_ERROR');
-  }
-
+function transform(html, hashtag) {
   return new Promise((resolve) => {
     const dom = new JSDOM(html, { runScripts: 'dangerously', resources: 'usable' });
 
@@ -78,11 +53,11 @@ async function postsFromHashtag(hashtag, page, publicPath) {
         return resolve();
       }
 
-      const posts = extractPosts(data, hashtag);
+      const posts = getPostsFromData(data, hashtag);
       debug(`hashtag:posts:${posts.length}`);
       return resolve(posts);
     };
   });
 }
 
-module.exports = postsFromHashtag;
+module.exports = transform;

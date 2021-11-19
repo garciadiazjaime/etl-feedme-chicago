@@ -2,8 +2,10 @@ const fs = require('fs');
 const mapSeries = require('async/mapSeries');
 const debug = require('debug')('app:post-etl');
 
-const postsFromHashtag = require('./posts-from-hashtag');
-const { PostModel } = require('./model');
+const extract = require('./extract');
+const transform = require('./transform');
+const load = require('./load');
+
 const config = require('../../config');
 
 async function main(page, publicPath) {
@@ -13,18 +15,13 @@ async function main(page, publicPath) {
   await mapSeries(hashtags, async (hashtag) => {
     debug(hashtag);
 
-    const posts = await postsFromHashtag(hashtag, page, publicPath);
+    const url = `https://www.instagram.com/explore/tags/${hashtag}/`;
+    const html = await extract(page, url, publicPath);
+
+    const posts = await transform(html, hashtag);
+
     fs.writeFileSync(`${publicPath}/post-etl-${hashtag}.json`, JSON.stringify(posts));
-
-    if (!Array.isArray(posts) || !posts.length) {
-      debug('NO_POSTS');
-    }
-
-    await mapSeries(posts, async (post) => {
-      await PostModel.findOneAndUpdate({ id: post.id }, post, {
-        upsert: true,
-      });
-    });
+    await load(posts);
   });
 
   return debug('============ done ============');
