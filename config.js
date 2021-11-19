@@ -13,6 +13,20 @@ const config = convict({
     default: '3030',
     env: 'PORT',
   },
+  instagram: {
+    username: {
+      env: 'INSTAGRAM_USERNAME',
+      default: '',
+    },
+    password: {
+      default: '',
+      env: 'INSTAGRAM_USER_PASSWORD',
+    },
+    hashtags: {
+      default: '',
+      env: 'INSTAGRAM_HASHTAGS',
+    },
+  },
 });
 
 // Perform validation
