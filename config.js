@@ -35,6 +35,14 @@ const config = convict({
       env: 'API_URL',
     },
   },
+  db: {
+    url: {
+      doc: 'Database host name/IP',
+      format: '*',
+      default: 'mongodb://localhost:27017/feedme',
+      env: 'DB_URL',
+    },
+  },
 });
 
 // Perform validation

@@ -5,6 +5,7 @@ const login = require('./module/instagram/login');
 const { resetFolder, checkFolder } = require('./module/support/folder');
 const { getPage } = require('./module/support/page');
 const { setupCron } = require('./module/support/cron');
+const { openDB } = require('./module/support/database');
 const config = require('./config');
 
 const PORT = config.get('port');
@@ -22,6 +23,9 @@ app.listen(PORT, async () => {
 
   resetFolder(publicPath);
   checkFolder('./data');
+
+  await openDB();
+  debug('DB opened');
 
   const page = await getPage();
 

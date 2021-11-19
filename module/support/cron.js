@@ -14,7 +14,7 @@ async function setupCron(cookies, page, publicPath) {
     return debug('NO_COOKIES');
   }
 
-  cron.schedule('7 */4 * * *', async () => {
+  cron.schedule('7 17 * * *', async () => {
     debug(`running job ${count}`);
 
     await postETL(page, publicPath);
