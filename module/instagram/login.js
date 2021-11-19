@@ -14,8 +14,11 @@ async function login(page, publicPath) {
 
   let html = await page.content();
   fs.writeFileSync(`${publicPath}/login-01.html`, html);
-
   await page.screenshot({ path: `${publicPath}/login-01.png` });
+
+  if (html.includes('Page Not Found • Instagram')) {
+    return debug('ERROR_NO_LOGIN');
+  }
 
   await page.type('input[name="username"]', config.get('instagram.username'));
   await page.type('input[name="password"]', config.get('instagram.password'));
@@ -40,6 +43,7 @@ async function login(page, publicPath) {
 
   const cookies = await page.cookies();
   debug(`cookies:${!!cookies}`);
+  fs.writeFileSync(`./data/cookies.json`, JSON.stringify(cookies));
 
   return cookies;
 }

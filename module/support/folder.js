@@ -1,13 +1,20 @@
 const fs = require('fs');
 
-function checkPublicFolder(publicPath) {
-  if (fs.existsSync(publicPath)){
-    fs.rmdirSync(publicPath, { recursive: true });
+function resetFolder(folder) {
+  if (fs.existsSync(folder)){
+    fs.rmdirSync(folder, { recursive: true });
   }
 
-  fs.mkdirSync(publicPath);
+  fs.mkdirSync(folder);
+}
+
+function checkFolder(folder) {
+  if (!fs.existsSync(folder)){
+    fs.mkdirSync(folder);
+  }
 }
 
 module.exports = {
-  checkPublicFolder
+  resetFolder,
+  checkFolder,
 }

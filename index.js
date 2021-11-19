@@ -2,7 +2,7 @@ const express = require('express');
 const debug = require('debug')('app:index');
 
 const login = require('./module/instagram/login')
-const {checkPublicFolder} = require('./module/support/folder')
+const { resetFolder, checkFolder } = require('./module/support/folder')
 const { getPage } = require('./module/support/page')
 const { setupCron } = require('./module/support/cron')
 const config = require('./config');
@@ -20,12 +20,13 @@ app.get('/', (req, res) => {
 app.listen(PORT, async () => {
   debug(`Listening on ${PORT}`);
 
-  checkPublicFolder(publicPath)
+  resetFolder(publicPath)
+  checkFolder('./data')
 
   const page = await getPage()
     
-  await login(page, publicPath)
+  const cookies = await login(page, publicPath)
 
-  setupCron(page, publicPath)
+  await setupCron(cookies, page, publicPath)
 });
 

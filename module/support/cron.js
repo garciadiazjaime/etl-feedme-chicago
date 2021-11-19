@@ -1,19 +1,23 @@
 const cron = require('node-cron');
+const postETL = require('../instagram/post-etl')
 const debug = require('debug')('app:cron');
 
 let count = 0
 
-function setupCron(page, publicPath) {
-  cron.schedule('* * * * *', async () => {
+async function setupCron(cookies, page, publicPath) {
+  if (!cookies) {
+    return debug('NO_COOKIES')
+  }
+
+  cron.schedule('7 */4 * * *', async () => {
     debug(`running job ${count}`);
 
-    const url = 'https://www.instagram.com/';
-    await page.goto(url);
-    await page.waitForTimeout(2000);
-    await page.screenshot({ path: `${publicPath}/instagram-${count}.png` });
+    await postETL(page, publicPath)
 
-    count = (count + 1) % 30
+    count += 1
   });
+
+  await postETL(page, publicPath)
 }
 
 module.exports = {
