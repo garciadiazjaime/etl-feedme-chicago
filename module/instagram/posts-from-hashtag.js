@@ -74,7 +74,7 @@ async function postsFromHashtag(hashtag, page, publicPath) {
       const { data } = dom.window._sharedData.entry_data.TagPage[0]; // eslint-disable-line
 
       if (!data) {
-        debug('NO_DATA')
+        debug('NO_DATA');
         return resolve();
       }
 
@@ -85,4 +85,4 @@ async function postsFromHashtag(hashtag, page, publicPath) {
   });
 }
 
-module.exports = postsFromHashtag
+module.exports = postsFromHashtag;

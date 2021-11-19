@@ -3,12 +3,16 @@ const debug = require('debug')('app:login');
 
 const config = require('../../config');
 
-
 async function login(page, publicPath) {
   const url = 'https://www.instagram.com/accounts/login/';
   debug(url);
 
-  await page.goto(url);
+  try {
+    await page.goto(url);
+  } catch (error) {
+    await page.screenshot({ path: `${publicPath}/login-00.png` });
+    return debug(error);
+  }
 
   await page.waitForTimeout(1000);
 
@@ -43,7 +47,7 @@ async function login(page, publicPath) {
 
   const cookies = await page.cookies();
   debug(`cookies:${!!cookies}`);
-  fs.writeFileSync(`./data/cookies.json`, JSON.stringify(cookies));
+  fs.writeFileSync('./data/cookies.json', JSON.stringify(cookies));
 
   return cookies;
 }

@@ -9,9 +9,9 @@ async function getPage() {
   });
   const page = await browser.newPage();
 
-  return page
+  return page;
 }
 
 module.exports = {
-  getPage
-}
+  getPage,
+};
