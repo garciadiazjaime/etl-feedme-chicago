@@ -1,6 +1,11 @@
 const cron = require('node-cron');
+const fetch = require('node-fetch');
+
 const postETL = require('../instagram/post-etl')
 const debug = require('debug')('app:cron');
+const config = require('../../config');
+
+const API_URL = config.get('api.url');
 
 let count = 0
 
@@ -16,6 +21,12 @@ async function setupCron(cookies, page, publicPath) {
 
     count += 1
   });
+
+  cron.schedule('*/10 * * * *', async () => {
+    await fetch(API_URL);
+  });
+
+  await fetch(API_URL);
 
   await postETL(page, publicPath)
 }
