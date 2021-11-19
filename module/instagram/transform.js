@@ -42,6 +42,10 @@ function getPostsFromData({ recent }, hashtag) {
 }
 
 function transform(html, hashtag) {
+  if (!html) {
+    return debug('NO_HTML');
+  }
+
   return new Promise((resolve) => {
     const dom = new JSDOM(html, { runScripts: 'dangerously', resources: 'usable' });
 
