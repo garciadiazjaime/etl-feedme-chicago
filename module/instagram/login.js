@@ -4,6 +4,12 @@ const debug = require('debug')('app:login');
 const config = require('../../config');
 
 async function login(page, publicPath) {
+  const cachedCookies = config.get('instagram.cookies');
+
+  if (cachedCookies) {
+    return JSON.parse(decodeURIComponent(cachedCookies));
+  }
+
   const url = 'https://www.instagram.com/accounts/login/';
   debug(url);
 

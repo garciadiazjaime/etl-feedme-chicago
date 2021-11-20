@@ -26,6 +26,10 @@ const config = convict({
       default: '',
       env: 'INSTAGRAM_HASHTAGS',
     },
+    cookies: {
+      default: '',
+      env: 'INSTAGRAM_COOKIES',
+    },
   },
   api: {
     url: {

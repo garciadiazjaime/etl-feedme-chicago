@@ -11,7 +11,8 @@ async function extract(page, url, publicPath) {
     return debug('NO_HTML');
   }
 
-  fs.writeFileSync(`${publicPath}/posts-from-hashtag-01.html`, html);
+  fs.writeFileSync(`${publicPath}/posts-from-hashtag.html`, html);
+  await page.screenshot({ path: `${publicPath}/posts-from-hashtag.png` });
 
   if (html.includes('Oops, an error occurred')) {
     return debug('ERROR');

@@ -14,6 +14,11 @@ async function setupCron(cookies, page, publicPath) {
     return debug('NO_COOKIES');
   }
 
+  if (Array.isArray(cookies) && cookies.length) {
+    debug('setting cookies');
+    await page.setCookie(...cookies);
+  }
+
   cron.schedule('7 */8 * * *', async () => {
     debug(`running job ${count}`);
 
