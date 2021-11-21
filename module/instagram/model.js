@@ -30,6 +30,8 @@ const PostSchema = new Schema({
   id: String,
   mediaUrl: String,
   permalink: String,
+  likeCount: Number,
+  commentsCount: Number,
   source: String,
 
   user: UserSchema,

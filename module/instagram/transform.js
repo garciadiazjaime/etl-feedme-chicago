@@ -74,6 +74,8 @@ function getPostsFromData({ recent }, hashtag) {
         permalink: `https://www.instagram.com/p/${media.code}/`,
         caption: media.caption ? media.caption.text : '',
         mediaUrl: getImage(media),
+        likeCount: media.like_count,
+        commentsCount: media.comment_count,
         source: hashtag,
         location: getLocation(media.location),
         user: getUser(media.user),
