@@ -1,9 +1,17 @@
 const fs = require('fs');
 const debug = require('debug')('app:extract');
 
+const sendEmail = require('../support/send-email');
+
 async function extract(page, url, publicPath) {
   debug(url);
-  await page.goto(url);
+  try {
+    await page.goto(url);
+  } catch (error) {
+    await sendEmail(`extract:${url} failed`);
+    return debug(error);
+  }
+
   await page.waitForTimeout(2000);
 
   const html = await page.content();

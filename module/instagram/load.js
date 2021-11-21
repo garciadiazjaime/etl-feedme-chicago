@@ -1,12 +1,16 @@
+const fs = require('fs');
+
 const mapSeries = require('async/mapSeries');
 const debug = require('debug')('app:load');
 
 const { PostModel } = require('./model');
 
-async function load(posts) {
+async function load(posts, hashtag, publicPath) {
   if (!Array.isArray(posts) || !posts.length) {
-    debug('NO_POSTS');
+    return debug('NO_POSTS');
   }
+
+  fs.writeFileSync(`${publicPath}/load-${hashtag}.json`, JSON.stringify(posts));
 
   let newPostsCount = 0;
 
@@ -21,7 +25,7 @@ async function load(posts) {
     });
   });
 
-  return newPostsCount;
+  return debug(`new posts:${newPostsCount}`);
 }
 
 module.exports = load;

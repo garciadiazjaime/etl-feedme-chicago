@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.6.0",
     "async": "^3.2.2",
     "convict": "^6.2.1",
     "debug": "^4.3.2",

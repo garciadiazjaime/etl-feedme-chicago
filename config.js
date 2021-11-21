@@ -47,6 +47,11 @@ const config = convict({
       env: 'DB_URL',
     },
   },
+  sendgrid: {
+    doc: 'Email app',
+    default: '',
+    env: 'SENDGRID_API_KEY',
+  },
 });
 
 // Perform validation
