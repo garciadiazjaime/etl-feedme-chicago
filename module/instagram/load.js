@@ -3,7 +3,7 @@ const fs = require('fs');
 const mapSeries = require('async/mapSeries');
 const debug = require('debug')('app:load');
 
-const { PostModel } = require('./model');
+const { PostModel } = require('../post/model');
 
 async function load(posts, hashtag, publicPath) {
   if (!Array.isArray(posts) || !posts.length) {
