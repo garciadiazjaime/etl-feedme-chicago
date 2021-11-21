@@ -1,3 +1,28 @@
+Install
+====
+Install node
+```
+nvm use
+```
+
+Install packages
+```
+npm i
+```
+
+Run
+====
+```
+npm run start
+```
+
+Deploy
+====
+```
+npm run deploy
+```
+
+
 Installing Puppeteer
 ====
 
@@ -12,5 +37,5 @@ Heroku
 
 How to set an environment variable
 ```
-heroku config:set GITHUB_USERNAME=joesmith
+heroku config:set GITHUB_USERNAME=diegorivera
 ```
