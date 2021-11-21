@@ -6,6 +6,7 @@ const { resetFolder, checkFolder } = require('./module/support/folder');
 const { getPage } = require('./module/support/page');
 const { setupCron } = require('./module/support/cron');
 const { openDB } = require('./module/support/database');
+const postRoutes = require('./module/post/routes');
 const config = require('./config');
 
 const PORT = config.get('port');
@@ -17,6 +18,8 @@ app.use(express.static(publicPath));
 app.get('/', (req, res) => {
   res.send(':)');
 });
+
+app.use('', postRoutes);
 
 app.listen(PORT, async () => {
   debug(`Listening on ${PORT}`);
