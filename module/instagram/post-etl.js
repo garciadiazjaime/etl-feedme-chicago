@@ -18,10 +18,11 @@ async function main(page, publicPath) {
     const url = `https://www.instagram.com/explore/tags/${hashtag}/`;
     const html = await extract(page, url, publicPath);
 
-    const posts = await transform(html, hashtag);
+    const posts = await transform(html, hashtag, publicPath);
 
     fs.writeFileSync(`${publicPath}/post-etl-${hashtag}.json`, JSON.stringify(posts));
-    await load(posts);
+    const newPosts = await load(posts);
+    debug(`new posts:${newPosts}`);
   });
 
   return debug('============ done ============');

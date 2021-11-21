@@ -2,6 +2,7 @@ const fs = require('fs');
 const debug = require('debug')('app:extract');
 
 async function extract(page, url, publicPath) {
+  debug(url);
   await page.goto(url);
   await page.waitForTimeout(2000);
 

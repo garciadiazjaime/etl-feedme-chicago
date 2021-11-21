@@ -1,3 +1,4 @@
+const fs = require('fs');
 const debug = require('debug')('app:transform');
 const jsdom = require('jsdom');
 
@@ -19,6 +20,48 @@ function getImage(media) {
   return null;
 }
 
+function getLocation(location) {
+  if (!location) {
+    return null;
+  }
+
+  const response = {
+    id: location.facebook_places_id,
+    address: location.address,
+    name: location.name,
+  };
+
+  if (location.lat && location.lng) {
+    response.gps = {
+      type: 'Point',
+      coordinates: [location.lng, location.lat],
+    };
+  }
+
+  return response;
+}
+
+function getUser(user) {
+  if (!user) {
+    return null;
+  }
+
+  return {
+    id: user.pk,
+    username: user.username,
+    fullName: user.full_name,
+    profilePicture: user.profile_pic_url,
+  };
+}
+
+function getLikers(likers) {
+  if (!likers) {
+    return null;
+  }
+
+  return likers.map(getUser);
+}
+
 function getPostsFromData({ recent }, hashtag) {
   if (!Array.isArray(recent.sections) || !recent.sections.length) {
     return null;
@@ -32,6 +75,9 @@ function getPostsFromData({ recent }, hashtag) {
         caption: media.caption ? media.caption.text : '',
         mediaUrl: getImage(media),
         source: hashtag,
+        location: getLocation(media.location),
+        user: getUser(media.user),
+        likers: getLikers(media.likers),
       });
     });
 
@@ -41,7 +87,7 @@ function getPostsFromData({ recent }, hashtag) {
   return items;
 }
 
-function transform(html, hashtag) {
+function transform(html, hashtag, publicPath) {
   if (!html) {
     return debug('NO_HTML');
   }
@@ -51,6 +97,7 @@ function transform(html, hashtag) {
 
     dom.window.onload = () => {
       const { data } = dom.window._sharedData.entry_data.TagPage[0]; // eslint-disable-line
+      fs.writeFileSync(`${publicPath}/transform-${hashtag}.json`, JSON.stringify(data));
 
       if (!data) {
         debug('NO_DATA');

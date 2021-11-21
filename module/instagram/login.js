@@ -7,6 +7,7 @@ async function login(page, publicPath) {
   const cachedCookies = config.get('instagram.cookies');
 
   if (cachedCookies) {
+    debug('cookies from environment');
     return JSON.parse(decodeURIComponent(cachedCookies));
   }
 
