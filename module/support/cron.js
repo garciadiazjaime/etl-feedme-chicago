@@ -19,7 +19,7 @@ async function setupCron(cookies, page, publicPath) {
     await page.setCookie(...cookies);
   }
 
-  cron.schedule('7 */2 * * *', async () => {
+  cron.schedule('7 */1 * * *', async () => {
     debug(`========JOB:${count}========`);
 
     await postETL(page, publicPath);
