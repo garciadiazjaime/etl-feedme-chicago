@@ -31,9 +31,7 @@ async function getPostsFromDay(startDate, endDate) {
     postByUser[username].postsCount += 1;
     postByUser[username].commentsCount += commentsCount;
     postByUser[username].likeCount += likeCount;
-    postByUser[username].total = postByUser[username].postsCount
-      + postByUser[username].commentsCount
-      + postByUser[username].likeCount;
+    postByUser[username].total += 1 + commentsCount + likeCount;
 
     return accu;
   }, postByUser);
@@ -42,10 +40,18 @@ async function getPostsFromDay(startDate, endDate) {
 }
 
 function getTopPosts(posts, limit = 10) {
-  return Object.entries(posts).sort((a, b) => b[1].total - a[1].total).slice(0, limit);
+  return Object.entries(posts)
+    .sort((a, b) => b[1].total - a[1].total).slice(0, limit)
+    .map((item) => ({
+      username: item[0],
+      postsCount: item[1].postsCount,
+      commentsCount: item[1].commentsCount,
+      likeCount: item[1].likeCount,
+      total: item[1].total,
+    }));
 }
 
-function getPostsByDay(lastDays = 30) {
+async function getPostsByDay(lastDays = 30) {
   const now = new Date();
   const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const endDate = new Date(startDate);
@@ -53,7 +59,7 @@ function getPostsByDay(lastDays = 30) {
 
   const times = Array.apply(null, Array(lastDays)).map((x, i) => i); // eslint-disable-line
 
-  return mapSeries(times, async () => {
+  const postsByDay = await mapSeries(times, async () => {
     const posts = await getPostsFromDay(startDate, endDate);
     const day = new Date(startDate);
 
@@ -65,6 +71,8 @@ function getPostsByDay(lastDays = 30) {
       posts: getTopPosts(posts),
     };
   });
+
+  return postsByDay.filter((item) => item.posts.length);
 }
 
 module.exports = getPostsByDay;

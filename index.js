@@ -30,9 +30,15 @@ app.listen(PORT, async () => {
   await openDB();
   debug('DB opened');
 
+  if (config.get('env') !== 'production') {
+    return null;
+  }
+
   const page = await getPage();
 
   const cookies = await login(page, publicPath);
 
   await setupCron(cookies, page, publicPath);
+
+  return null;
 });
