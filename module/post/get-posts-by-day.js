@@ -39,10 +39,11 @@ async function getPostsFromDay(startDate, endDate) {
   return postByUser;
 }
 
-function getTopPosts(posts, limit = 10) {
+function getTopPosts(posts, date, limit = 10) {
   return Object.entries(posts)
     .sort((a, b) => b[1].total - a[1].total).slice(0, limit)
     .map((item) => ({
+      date,
       username: item[0],
       postsCount: item[1].postsCount,
       commentsCount: item[1].commentsCount,
@@ -66,13 +67,10 @@ async function getPostsByDay(lastDays = 30) {
     startDate.setDate(startDate.getDate() - 1);
     endDate.setDate(endDate.getDate() - 1);
 
-    return {
-      date: day,
-      posts: getTopPosts(posts),
-    };
+    return getTopPosts(posts, day);
   });
 
-  return postsByDay.filter((item) => item.posts.length);
+  return postsByDay.filter((items) => items.length);
 }
 
 module.exports = getPostsByDay;
