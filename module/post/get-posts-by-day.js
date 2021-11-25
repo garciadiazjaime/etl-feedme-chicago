@@ -70,7 +70,7 @@ async function getPostsByDay(lastDays = 30) {
     return getTopPosts(posts, day);
   });
 
-  return postsByDay.filter((items) => items.length);
+  return postsByDay.filter((items) => items.length).reverse();
 }
 
 module.exports = getPostsByDay;
