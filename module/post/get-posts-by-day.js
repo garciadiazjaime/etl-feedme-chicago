@@ -2,6 +2,10 @@ const mapSeries = require('async/mapSeries');
 
 const { PostModel } = require('./model');
 
+const blockUsers = [
+  'tboxbarcrawls',
+];
+
 async function getPostsFromDay(startDate, endDate) {
   const posts = await PostModel.find({
     user: { $exists: 1 },
@@ -18,6 +22,10 @@ async function getPostsFromDay(startDate, endDate) {
       commentsCount = 0,
       likeCount = 0,
     } = post;
+
+    if (blockUsers.includes(username)) {
+      return accu;
+    }
 
     if (!postByUser[username]) {
       postByUser[username] = {
@@ -39,7 +47,7 @@ async function getPostsFromDay(startDate, endDate) {
   return postByUser;
 }
 
-function getTopPosts(posts, date, limit = 10) {
+function getTopPosts(posts, date, limit = 50) {
   return Object.entries(posts)
     .sort((a, b) => b[1].total - a[1].total).slice(0, limit)
     .map((item) => ({
