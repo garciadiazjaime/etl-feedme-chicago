@@ -4,6 +4,11 @@ const { PostModel } = require('./model');
 
 const blockUsers = [
   'tboxbarcrawls',
+  'bears_alliance',
+  'jana_berlin.food',
+  'wilmasfoodandnature',
+  'nataliesfoodgallery',
+  'adventuresofanyfoodie',
 ];
 
 async function getPostsFromDay(startDate, endDate) {
