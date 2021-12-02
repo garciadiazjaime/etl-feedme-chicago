@@ -1,6 +1,8 @@
-const fs = require('fs');
 const debug = require('debug')('app:transform');
 const jsdom = require('jsdom');
+
+const { saveJSON } = require('../support/file');
+const sendEmail = require('../support/send-email');
 
 const { JSDOM } = jsdom;
 
@@ -89,7 +91,7 @@ function getPostsFromData({ recent }, hashtag) {
   return items;
 }
 
-function transform(html, hashtag, publicPath) {
+function transform(html, hashtag, count) {
   if (!html) {
     return debug('NO_HTML');
   }
@@ -97,9 +99,14 @@ function transform(html, hashtag, publicPath) {
   return new Promise((resolve) => {
     const dom = new JSDOM(html, { runScripts: 'dangerously', resources: 'usable' });
 
-    dom.window.onload = () => {
+    dom.window.onload = async () => {
+      if (!dom.window._sharedData) { // eslint-disable-line
+        debug(`ERROR:transform-${hashtag}-${count}`);
+        await sendEmail(`ERROR:transform-${hashtag}-${count}`);
+        return resolve();
+      }
       const { data } = dom.window._sharedData.entry_data.TagPage[0]; // eslint-disable-line
-      fs.writeFileSync(`${publicPath}/transform-${hashtag}.json`, JSON.stringify(data));
+      saveJSON(`transform-${hashtag}-${count}`, data);
 
       if (!data) {
         debug('NO_DATA');

@@ -1,22 +1,21 @@
-const fs = require('fs');
-
 const mapSeries = require('async/mapSeries');
 const debug = require('debug')('app:load');
 
 const { PostModel } = require('../post/model');
+const { saveJSON } = require('../support/file');
 
-async function load(posts, hashtag, publicPath) {
+async function load(posts, hashtag, count) {
   if (!Array.isArray(posts) || !posts.length) {
     return debug('NO_POSTS');
   }
 
-  fs.writeFileSync(`${publicPath}/load-${hashtag}.json`, JSON.stringify(posts));
+  saveJSON(`load-${hashtag}-${count}`, posts);
 
   let newPostsCount = 0;
 
   await mapSeries(posts, async (post) => {
-    const count = await PostModel.countDocuments({ id: post.id });
-    if (!count) {
+    const documents = await PostModel.countDocuments({ id: post.id });
+    if (!documents) {
       newPostsCount += 1;
     }
 

@@ -1,9 +1,9 @@
-const fs = require('fs');
 const debug = require('debug')('app:extract');
 
 const sendEmail = require('../support/send-email');
+const { saveHTML } = require('../support/file');
 
-async function extract(page, url, publicPath) {
+async function extract(page, url, count) {
   debug(url);
   try {
     await page.goto(url);
@@ -20,8 +20,7 @@ async function extract(page, url, publicPath) {
     return debug('NO_HTML');
   }
 
-  fs.writeFileSync(`${publicPath}/posts-from-hashtag.html`, html);
-  await page.screenshot({ path: `${publicPath}/posts-from-hashtag.png` });
+  await saveHTML(`posts-from-hashtag-${count}`, html, page);
 
   if (html.includes('Oops, an error occurred')) {
     return debug('ERROR');

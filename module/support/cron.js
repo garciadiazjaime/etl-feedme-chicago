@@ -9,7 +9,7 @@ const API_URL = config.get('api.url');
 
 let count = 0;
 
-async function setupCron(cookies, page, publicPath) {
+async function setupCron(cookies, page) {
   if (!cookies) {
     return debug('NO_COOKIES');
   }
@@ -22,9 +22,9 @@ async function setupCron(cookies, page, publicPath) {
   cron.schedule('7 */1 * * *', async () => {
     debug(`========JOB:${count}========`);
 
-    await postETL(page, publicPath);
-
     count += 1;
+
+    await postETL(page, count);
   });
 
   cron.schedule('*/12 * * * *', async () => {
@@ -33,7 +33,7 @@ async function setupCron(cookies, page, publicPath) {
 
   await fetch(API_URL);
 
-  return postETL(page, publicPath);
+  return postETL(page, count);
 }
 
 module.exports = {

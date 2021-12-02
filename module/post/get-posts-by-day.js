@@ -3,6 +3,7 @@ const mapSeries = require('async/mapSeries');
 const { PostModel } = require('./model');
 
 const blockUsers = [
+  'toom',
   'tboxbarcrawls',
   'bears_alliance',
   'jana_berlin.food',

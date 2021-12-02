@@ -11,7 +11,7 @@ const config = require('./config');
 
 const PORT = config.get('port');
 const app = express();
-const publicPath = './public';
+const publicPath = config.get('publicPath');
 
 app.use(express.static(publicPath));
 

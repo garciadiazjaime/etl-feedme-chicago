@@ -6,15 +6,15 @@ const load = require('./load');
 
 const config = require('../../config');
 
-async function main(page, publicPath) {
+async function main(page, count) {
   const hashtags = config.get('instagram.hashtags').split(',');
 
   await mapSeries(hashtags, async (hashtag) => {
     const url = `https://www.instagram.com/explore/tags/${hashtag}/`;
 
-    const html = await extract(page, url, publicPath);
-    const posts = await transform(html, hashtag, publicPath);
-    await load(posts, hashtag, publicPath);
+    const html = await extract(page, url, count);
+    const posts = await transform(html, hashtag, count);
+    await load(posts, hashtag, count);
   });
 }
 

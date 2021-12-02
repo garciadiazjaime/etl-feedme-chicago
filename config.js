@@ -52,6 +52,10 @@ const config = convict({
     default: '',
     env: 'SENDGRID_API_KEY',
   },
+  publicPath: {
+    default: './public',
+    env: 'PUBLIC_PATH',
+  },
 });
 
 // Perform validation
