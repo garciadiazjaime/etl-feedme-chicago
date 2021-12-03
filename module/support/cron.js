@@ -20,9 +20,8 @@ async function setupCron(cookies, page) {
   }
 
   cron.schedule('7 */1 * * *', async () => {
-    debug(`========JOB:${count}========`);
-
     count += 1;
+    debug(`========JOB:${count}========`);
 
     await postETL(page, count);
   });

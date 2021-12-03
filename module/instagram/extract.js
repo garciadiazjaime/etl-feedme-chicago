@@ -6,7 +6,9 @@ const { saveHTML } = require('../support/file');
 async function extract(page, url, count) {
   debug(url);
   try {
-    await page.goto(url);
+    await page.goto(url, {
+      waitUntil: 'networkidle0',
+    });
   } catch (error) {
     await sendEmail(`extract:${url} failed`);
     return debug(error);
