@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "jsdom": "^18.1.0",
     "mongoose": "^6.0.13",
+    "morgan": "^1.10.0",
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.6",
     "puppeteer": "^11.0.0"

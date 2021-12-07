@@ -1,5 +1,6 @@
 const express = require('express');
 const debug = require('debug')('app:index');
+const morgan = require('morgan');
 
 const login = require('./module/instagram/login');
 const { checkFolder } = require('./module/support/folder');
@@ -11,6 +12,8 @@ const config = require('./config');
 
 const PORT = config.get('port');
 const app = express();
+app.use(morgan('combined'));
+
 const publicPath = config.get('publicPath');
 
 app.use(express.static(publicPath));
