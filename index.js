@@ -2,7 +2,7 @@ const express = require('express');
 const debug = require('debug')('app:index');
 
 const login = require('./module/instagram/login');
-const { resetFolder, checkFolder } = require('./module/support/folder');
+const { checkFolder } = require('./module/support/folder');
 const { getPage } = require('./module/support/page');
 const { setupCron } = require('./module/support/cron');
 const { openDB } = require('./module/support/database');
@@ -24,7 +24,7 @@ app.use('', postRoutes);
 app.listen(PORT, async () => {
   debug(`Listening on ${PORT}`);
 
-  resetFolder(publicPath);
+  checkFolder(publicPath);
   checkFolder('./data');
 
   await openDB();
