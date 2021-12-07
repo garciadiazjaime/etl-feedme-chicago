@@ -1,16 +1,7 @@
 const fs = require('fs');
-const fetch = require('node-fetch');
-const debug = require('debug')('app:get-post-image');
 
 const { PostModel } = require('./model');
-
-async function downloadImage(mediaUrl, path) {
-  debug(`downloading:${mediaUrl}`);
-
-  const response = await fetch(mediaUrl);
-  const buffer = await response.buffer();
-  fs.writeFileSync(path, buffer);
-}
+const downloadImage = require('../image/download-image');
 
 async function getPostImage(id) {
   const path = `./public/${id}.jpeg`;

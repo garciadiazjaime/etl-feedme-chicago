@@ -3,11 +3,13 @@ const fetch = require('node-fetch');
 const debug = require('debug')('app:cron');
 
 const postETL = require('../instagram/post-etl');
+const imageCron = require('../image/cron-entry');
 const config = require('../../config');
 
 const API_URL = config.get('api.url');
 
 let count = 0;
+let countImage = 0;
 
 async function setupCron(cookies, page) {
   if (!cookies) {
@@ -21,9 +23,16 @@ async function setupCron(cookies, page) {
 
   cron.schedule('7 */1 * * *', async () => {
     count += 1;
-    debug(`========JOB:${count}========`);
+    debug(`========JOB:postETL:${count}========`);
 
     await postETL(page, count);
+  });
+
+  cron.schedule('19 */1 * * *', async () => {
+    countImage += 1;
+    debug(`========JOB:imageCron:${countImage}========`);
+
+    await imageCron();
   });
 
   cron.schedule('*/12 * * * *', async () => {
@@ -32,7 +41,11 @@ async function setupCron(cookies, page) {
 
   await fetch(API_URL);
 
-  return postETL(page, count);
+  await postETL(page, count);
+
+  await imageCron();
+
+  return null;
 }
 
 module.exports = {

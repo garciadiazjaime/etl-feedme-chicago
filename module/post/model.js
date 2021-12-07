@@ -25,6 +25,11 @@ const LocationSchema = new mongoose.Schema({
   timestamps: true,
 });
 
+const ClasificationSchema = new Schema({
+  probability: Number,
+  className: String,
+});
+
 const PostSchema = new Schema({
   caption: String,
   id: String,
@@ -37,6 +42,7 @@ const PostSchema = new Schema({
   user: UserSchema,
   location: LocationSchema,
   likers: [UserSchema],
+  classification: [ClasificationSchema],
 }, {
   timestamps: true,
 });
