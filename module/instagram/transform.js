@@ -101,12 +101,12 @@ function transform(html, hashtag, count) {
 
     dom.window.onload = async () => {
       if (!dom.window._sharedData) { // eslint-disable-line
-        const name = `transform-${hashtag}-${count}`;
+        const name = `posts-from-hashtag-${count}`;
         debug(`ERROR:${name}`);
         await sendEmail(`<div>
           ERROR:${name} <br />
           <a href="https://feedmechicago.herokuapp.com/${name}.png">Print-screen</a> <br />
-          <a href="https://feedmechicago.herokuapp.com/${name}.html">HTM</a>
+          <a href="https://feedmechicago.herokuapp.com/${name}.html">HTML</a>
         </div>`);
         return resolve();
       }

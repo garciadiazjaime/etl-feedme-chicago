@@ -14,7 +14,7 @@ async function extract(page, url, count) {
     return debug(error);
   }
 
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(3000);
 
   const html = await page.content();
 
