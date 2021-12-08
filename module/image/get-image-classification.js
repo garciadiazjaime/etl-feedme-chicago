@@ -1,33 +1,24 @@
+const fetch = require('node-fetch');
 const mobilenet = require('@tensorflow-models/mobilenet');
 const tfnode = require('@tensorflow/tfjs-node');
-const fs = require('fs');
 
 const debug = require('debug')('app:classify-images');
 
-function readImage(path) {
-  const imageBuffer = fs.readFileSync(path);
+async function getImage(mediaUrl) {
+  const response = await fetch(mediaUrl);
+  const imageBuffer = await response.buffer();
   const tfimage = tfnode.node.decodeImage(imageBuffer);
 
   return tfimage;
 }
 
-async function imageClassification(path) {
-  const image = readImage(path);
+async function getImageClassification(mediaUrl) {
+  debug(`classifying:${mediaUrl}`);
 
+  const image = await getImage(mediaUrl);
   const mobilenetModel = await mobilenet.load();
-  const predictions = await mobilenetModel.classify(image);
+  const classification = await mobilenetModel.classify(image);
 
-  return predictions;
-}
-
-async function getImageClassification(path) {
-  debug(`classifying:${path}`);
-
-  if (!path || !fs.existsSync(path)) {
-    return [];
-  }
-
-  const classification = await imageClassification(path);
   return classification;
 }
 
