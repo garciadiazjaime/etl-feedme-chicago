@@ -1,10 +1,7 @@
 const debug = require('debug')('app:transform');
-const jsdom = require('jsdom');
 
 const { saveJSON } = require('../support/file');
 const sendEmail = require('../support/send-email');
-
-const { JSDOM } = jsdom;
 
 function getImage(media) {
   if (media.image_versions2
@@ -91,38 +88,35 @@ function getPostsFromData({ recent }, hashtag) {
   return items;
 }
 
-function transform(html, hashtag, count) {
+async function getData(page, count) {
+  const sharedData = await page.evaluate(() => _sharedData ? _sharedData : null) // eslint-disable-line
+
+  if (!sharedData) {
+    const name = `posts-from-hashtag-${count}`;
+    debug(`ERROR:${name}`);
+    return sendEmail(`<div>
+      ERROR:${name} <br />
+      <a href="https://feedmechicago.herokuapp.com/${name}.png">Print-screen</a> <br />
+      <a href="https://feedmechicago.herokuapp.com/${name}.html">HTML</a>
+    </div>`);
+  }
+
+  return sharedData.entry_data.TagPage[0].data;
+}
+
+async function transform(html, hashtag, count, page) {
   if (!html) {
     return debug('NO_HTML');
   }
 
-  return new Promise((resolve) => {
-    const dom = new JSDOM(html, { runScripts: 'dangerously', resources: 'usable' });
+  const data = await getData(page, count);
+  saveJSON(`transform-${hashtag}-${count}`, data);
+  if (!data) {
+    return debug('NO_DATA');
+  }
 
-    dom.window.onload = async () => {
-      if (!dom.window._sharedData) { // eslint-disable-line
-        const name = `posts-from-hashtag-${count}`;
-        debug(`ERROR:${name}`);
-        await sendEmail(`<div>
-          ERROR:${name} <br />
-          <a href="https://feedmechicago.herokuapp.com/${name}.png">Print-screen</a> <br />
-          <a href="https://feedmechicago.herokuapp.com/${name}.html">HTML</a>
-        </div>`);
-        return resolve();
-      }
-      const { data } = dom.window._sharedData.entry_data.TagPage[0]; // eslint-disable-line
-      saveJSON(`transform-${hashtag}-${count}`, data);
-
-      if (!data) {
-        debug('NO_DATA');
-        return resolve();
-      }
-
-      const posts = getPostsFromData(data, hashtag);
-      debug(`hashtag:posts:${posts.length}`);
-      return resolve(posts);
-    };
-  });
+  const posts = getPostsFromData(data, hashtag);
+  return posts;
 }
 
 module.exports = transform;

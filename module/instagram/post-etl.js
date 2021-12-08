@@ -13,7 +13,7 @@ async function main(page, count) {
     const url = `https://www.instagram.com/explore/tags/${hashtag}/`;
 
     const html = await extract(page, url, count);
-    const posts = await transform(html, hashtag, count);
+    const posts = await transform(html, hashtag, count, page);
     await load(posts, hashtag, count);
   });
 }
