@@ -1,12 +1,9 @@
 const cron = require('node-cron');
-const fetch = require('node-fetch');
 const debug = require('debug')('app:cron');
 
 const postETL = require('../instagram/post-etl');
 const imageCron = require('../image/cron-entry');
-const config = require('../../config');
-
-const API_URL = config.get('api.url');
+const { ping } = require('./heroku');
 
 let count = 0;
 let countImage = 0;
@@ -36,10 +33,10 @@ async function setupCron(cookies, page) {
   });
 
   cron.schedule('*/12 * * * *', async () => {
-    await fetch(API_URL);
+    await ping();
   });
 
-  await fetch(API_URL);
+  await ping();
 
   await postETL(page, count);
 

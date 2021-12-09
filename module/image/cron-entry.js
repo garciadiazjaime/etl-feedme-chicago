@@ -14,10 +14,12 @@ async function main() {
     return null;
   }
 
-  await mapSeries(posts.slice(0, 10), async (post) => {
+  let count = 0;
+  await mapSeries(posts.slice(0, 1), async (post) => {
     const { id, mediaUrl } = post;
 
-    const classification = await getImageClassification(mediaUrl);
+    count += 1;
+    const classification = await getImageClassification(id, mediaUrl, count);
 
     await savePostClassification(id, classification);
 
