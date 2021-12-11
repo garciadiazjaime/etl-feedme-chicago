@@ -89,7 +89,7 @@ function getPostsFromData({ recent }, hashtag) {
 }
 
 async function getData(page, count) {
-  const sharedData = await page.evaluate(() => _sharedData ? _sharedData : null) // eslint-disable-line
+  const sharedData = await page.evaluate(() => typeof _sharedData !== undefined ? _sharedData : null) // eslint-disable-line
 
   if (!sharedData) {
     const name = `posts-from-hashtag-${count}`;
