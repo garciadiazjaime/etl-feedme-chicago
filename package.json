@@ -8,7 +8,8 @@
     "deploy": "git push heroku",
     "start": "node index.js",
     "dev": "npx nodemon index.js",
-    "lint": "npx eslint ."
+    "lint": "npx eslint .",
+    "a": " heroku accounts:set etl-feedme-chicago"
   },
   "keywords": [],
   "author": "",

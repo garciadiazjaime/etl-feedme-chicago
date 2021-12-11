@@ -1,6 +1,4 @@
-const config = require('../../config');
-
-const secondsToWait = 1000 * (config.get('env') === 'production' ? 10 : 1);
+const secondsToWait = 1000 * 10;
 
 async function waiter() {
   return new Promise((resolve) => {
