@@ -6,7 +6,7 @@ const config = require('../../config');
 async function getImageClassification(id, mediaUrl, count) {
   debug(`classifying:${count}:${id}`);
 
-  const url = `${config.get('api.classification')}/image/classification?mediaUrl=${encodeURIComponent(mediaUrl)}`;
+  const url = `${config.get('api.classification')}/image/classification?mediaUrl=${encodeURIComponent(mediaUrl)}&count=${count}`;
   const response = await fetch(url);
   const classification = await response.json();
 
