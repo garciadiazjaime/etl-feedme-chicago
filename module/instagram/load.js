@@ -3,6 +3,7 @@ const debug = require('debug')('app:load');
 
 const { PostModel } = require('../post/model');
 const { saveJSON } = require('../support/file');
+const uploadImage = require('../image/upload-image');
 
 async function load(posts, hashtag, count) {
   if (!Array.isArray(posts) || !posts.length) {
@@ -19,7 +20,17 @@ async function load(posts, hashtag, count) {
       newPostsCount += 1;
     }
 
-    await PostModel.findOneAndUpdate({ id: post.id }, post, {
+    const response = await uploadImage(post.id, post.mediaUrl);
+    if (response && response.url) {
+      return PostModel.findOneAndUpdate({ id: post.id }, {
+        ...post,
+        imageUrl: response.url,
+      }, {
+        upsert: true,
+      });
+    }
+
+    return PostModel.findOneAndUpdate({ id: post.id }, post, {
       upsert: true,
     });
   });

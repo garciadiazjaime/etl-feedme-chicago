@@ -34,6 +34,7 @@ const PostSchema = new Schema({
   caption: String,
   id: String,
   mediaUrl: String,
+  imageUrl: String,
   permalink: String,
   likeCount: Number,
   commentsCount: Number,

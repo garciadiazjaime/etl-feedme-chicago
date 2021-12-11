@@ -62,6 +62,20 @@ const config = convict({
     default: './public',
     env: 'PUBLIC_PATH',
   },
+  cloudinary: {
+    user: {
+      default: '',
+      env: 'CLOUDINARY_USER',
+    },
+    key: {
+      default: '',
+      env: 'CLOUDINARY_KEY',
+    },
+    secret: {
+      default: '',
+      env: 'CLOUDINARY_SECRET',
+    },
+  },
 });
 
 // Perform validation

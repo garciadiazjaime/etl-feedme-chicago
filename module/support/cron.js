@@ -6,10 +6,6 @@ const imageCron = require('../image/cron-entry');
 const { ping, isProd } = require('./heroku');
 
 async function prodCron(cookies, page) {
-  if (!isProd()) {
-    return null;
-  }
-
   if (!cookies) {
     return debug('NO_COOKIES');
   }
