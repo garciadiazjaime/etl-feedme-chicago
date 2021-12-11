@@ -2,10 +2,9 @@ const cron = require('node-cron');
 const debug = require('debug')('app:cron');
 
 const postCron = require('../instagram/cron-entry');
-const imageCron = require('../image/cron-entry');
-const { ping, isProd } = require('./heroku');
+const { ping } = require('./heroku');
 
-async function prodCron(cookies, page) {
+async function setupCron(cookies, page) {
   if (!cookies) {
     return debug('NO_COOKIES');
   }
@@ -32,29 +31,7 @@ async function prodCron(cookies, page) {
 
   await postCron(page, prodCount);
 
-  return null;
-}
-
-function localCron() {
-  if (isProd()) {
-    return null;
-  }
-
-  let countImage = 0;
-
-  cron.schedule('19 */1 * * *', async () => {
-    countImage += 1;
-    debug(`========JOB:imageCron:${countImage}========`);
-
-    await imageCron();
-  });
-
-  return null;
-}
-
-async function setupCron(cookies, page) {
-  await prodCron(cookies, page);
-  localCron();
+  return debug('CRON_SETUP');
 }
 
 module.exports = {

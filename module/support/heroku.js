@@ -8,11 +8,6 @@ async function ping() {
   await fetch(API_URL);
 }
 
-function isProd() {
-  return config.get('env') === 'production';
-}
-
 module.exports = {
   ping,
-  isProd,
 };
