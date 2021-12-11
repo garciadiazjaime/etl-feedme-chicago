@@ -10,6 +10,11 @@ async function ping() {
   await fetch(API_CLASSIFICATION_URL);
 }
 
+function isProd() {
+  return config.get('env') === 'production';
+}
+
 module.exports = {
   ping,
+  isProd,
 };

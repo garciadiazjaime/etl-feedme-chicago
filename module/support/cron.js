@@ -2,11 +2,14 @@ const cron = require('node-cron');
 const debug = require('debug')('app:cron');
 
 const postETL = require('../instagram/post-etl');
-const { ping } = require('./heroku');
+const imageCron = require('../image/cron-entry');
+const { ping, isProd } = require('./heroku');
 
-let count = 0;
+async function prodCron(cookies, page) {
+  if (!isProd()) {
+    return null;
+  }
 
-async function setupCron(cookies, page) {
   if (!cookies) {
     return debug('NO_COOKIES');
   }
@@ -16,11 +19,13 @@ async function setupCron(cookies, page) {
     await page.setCookie(...cookies);
   }
 
-  cron.schedule('7 */1 * * *', async () => {
-    count += 1;
-    debug(`========JOB:postETL:${count}========`);
+  let prodCount = 0;
 
-    await postETL(page, count);
+  cron.schedule('7 */1 * * *', async () => {
+    prodCount += 1;
+    debug(`========JOB:postETL:${prodCount}========`);
+
+    await postETL(page, prodCount);
   });
 
   cron.schedule('*/12 * * * *', async () => {
@@ -29,9 +34,31 @@ async function setupCron(cookies, page) {
 
   await ping();
 
-  await postETL(page, count);
+  await postETL(page, prodCount);
 
   return null;
+}
+
+function localCron() {
+  if (isProd()) {
+    return null;
+  }
+
+  let countImage = 0;
+
+  cron.schedule('19 */1 * * *', async () => {
+    countImage += 1;
+    debug(`========JOB:imageCron:${countImage}========`);
+
+    await imageCron();
+  });
+
+  return null;
+}
+
+async function setupCron(cookies, page) {
+  await prodCron(cookies, page);
+  localCron();
 }
 
 module.exports = {

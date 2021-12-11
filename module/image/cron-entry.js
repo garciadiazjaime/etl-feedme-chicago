@@ -15,7 +15,7 @@ async function main() {
   }
 
   let count = 0;
-  await mapSeries(posts.slice(0, 10), async (post) => {
+  await mapSeries(posts, async (post) => {
     const { id, mediaUrl } = post;
 
     count += 1;
