@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const debug = require('debug')('app:cron');
 
-const postETL = require('../instagram/post-etl');
+const postCron = require('../instagram/cron-entry');
 const imageCron = require('../image/cron-entry');
 const { ping, isProd } = require('./heroku');
 
@@ -23,9 +23,9 @@ async function prodCron(cookies, page) {
 
   cron.schedule('7 */1 * * *', async () => {
     prodCount += 1;
-    debug(`========JOB:postETL:${prodCount}========`);
+    debug(`========JOB:postCron:${prodCount}========`);
 
-    await postETL(page, prodCount);
+    await postCron(page, prodCount);
   });
 
   cron.schedule('*/12 * * * *', async () => {
@@ -34,7 +34,7 @@ async function prodCron(cookies, page) {
 
   await ping();
 
-  await postETL(page, prodCount);
+  await postCron(page, prodCount);
 
   return null;
 }
