@@ -32,7 +32,6 @@ app.listen(PORT, async () => {
   checkFolder('./data');
 
   await openDB();
-  debug('DB opened');
 
   const page = await getPage();
 

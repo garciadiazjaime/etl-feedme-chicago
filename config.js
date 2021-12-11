@@ -38,6 +38,12 @@ const config = convict({
       default: 'http://127.0.0.1:3030',
       env: 'API_URL',
     },
+    classification: {
+      doc: 'API URL',
+      format: String,
+      default: 'http://127.0.0.1:3031',
+      env: 'CLASSIFICATION_API_URL',
+    },
   },
   db: {
     url: {

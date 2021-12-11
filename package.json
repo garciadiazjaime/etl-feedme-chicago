@@ -10,7 +10,8 @@
     "lint": "npx eslint .",
     "d": "git push heroku",
     "a": " heroku accounts:set etl-feedme-chicago",
-    "l": " heroku logs"
+    "l": " heroku logs",
+    "cron:image": "node module/image/cron-entry.js"
   },
   "keywords": [],
   "author": "",
