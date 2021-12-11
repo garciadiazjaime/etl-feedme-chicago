@@ -8,7 +8,7 @@ const waiter = require('../support/waiter');
 
 async function main() {
   const posts = await getPosts();
-  debug(`posts-to-classify:${posts.length}:10`);
+  debug(`posts-to-classify:${posts.length}`);
 
   if (!Array.isArray(posts) || !posts.length) {
     return null;
