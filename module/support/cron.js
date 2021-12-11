@@ -2,11 +2,9 @@ const cron = require('node-cron');
 const debug = require('debug')('app:cron');
 
 const postETL = require('../instagram/post-etl');
-const imageCron = require('../image/cron-entry');
 const { ping } = require('./heroku');
 
 let count = 0;
-let countImage = 0;
 
 async function setupCron(cookies, page) {
   if (!cookies) {
@@ -25,13 +23,6 @@ async function setupCron(cookies, page) {
     await postETL(page, count);
   });
 
-  cron.schedule('19 */1 * * *', async () => {
-    countImage += 1;
-    debug(`========JOB:imageCron:${countImage}========`);
-
-    await imageCron();
-  });
-
   cron.schedule('*/12 * * * *', async () => {
     await ping();
   });
@@ -39,8 +30,6 @@ async function setupCron(cookies, page) {
   await ping();
 
   await postETL(page, count);
-
-  await imageCron();
 
   return null;
 }
