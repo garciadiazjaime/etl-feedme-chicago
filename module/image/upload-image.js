@@ -10,8 +10,8 @@ cloudinary.config({
   secure: true,
 });
 
-function uploadImage(id, mediaUrl) {
-  debug(`uploading:${id}`);
+function uploadImage(id, mediaUrl, count) {
+  debug(`uploading:${count}:${id}`);
 
   return new Promise((resolve) => {
     cloudinary.uploader.upload(

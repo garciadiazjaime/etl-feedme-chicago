@@ -1,10 +1,15 @@
 const cron = require('node-cron');
 const debug = require('debug')('app:cron');
 
+const login = require('../instagram/login');
 const postCron = require('../instagram/cron-entry');
+const { getPage } = require('./page');
 const { ping } = require('./heroku');
 
-async function setupCron(cookies, page) {
+async function setupCron() {
+  const page = await getPage();
+  const cookies = await login(page);
+
   if (!cookies) {
     return debug('NO_COOKIES');
   }

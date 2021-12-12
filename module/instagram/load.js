@@ -16,21 +16,18 @@ async function load(posts, hashtag, count) {
 
   await mapSeries(posts, async (post) => {
     const documents = await PostModel.countDocuments({ id: post.id });
-    if (!documents) {
-      newPostsCount += 1;
+
+    if (documents) {
+      return null;
     }
 
-    const response = await uploadImage(post.id, post.mediaUrl);
-    if (response && response.url) {
-      return PostModel.findOneAndUpdate({ id: post.id }, {
-        ...post,
-        imageUrl: response.url,
-      }, {
-        upsert: true,
-      });
-    }
+    newPostsCount += 1;
+    const imageResponse = await uploadImage(post.id, post.mediaUrl, newPostsCount);
 
-    return PostModel.findOneAndUpdate({ id: post.id }, post, {
+    return PostModel.findOneAndUpdate({ id: post.id }, {
+      ...post,
+      imageUrl: imageResponse && imageResponse.url ? imageResponse.url : '',
+    }, {
       upsert: true,
     });
   });

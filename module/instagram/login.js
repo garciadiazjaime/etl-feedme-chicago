@@ -3,7 +3,9 @@ const debug = require('debug')('app:login');
 
 const config = require('../../config');
 
-async function login(page, publicPath) {
+const publicPath = config.get('publicPath');
+
+async function login(page) {
   const cachedCookies = config.get('instagram.cookies');
 
   if (cachedCookies) {
