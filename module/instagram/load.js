@@ -26,6 +26,7 @@ async function load(posts, hashtag, count) {
 
     return PostModel.findOneAndUpdate({ id: post.id }, {
       ...post,
+      classification: null,
       imageUrl: imageResponse && imageResponse.url ? imageResponse.url : '',
     }, {
       upsert: true,

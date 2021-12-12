@@ -2,7 +2,7 @@ const { PostModel } = require('./model');
 
 async function getPostsForImageClassification() {
   const posts = await PostModel
-    .find({ classification: { $exists: false } })
+    .find({ classification: null })
     .sort({ createdAt: -1 })
     .limit(100);
 
