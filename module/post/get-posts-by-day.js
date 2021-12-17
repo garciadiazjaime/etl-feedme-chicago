@@ -2,16 +2,6 @@ const mapSeries = require('async/mapSeries');
 
 const { PostModel } = require('./model');
 
-const blockUsers = [
-  'toom',
-  'tboxbarcrawls',
-  'bears_alliance',
-  'jana_berlin.food',
-  'wilmasfoodandnature',
-  'nataliesfoodgallery',
-  'adventuresofanyfoodie',
-];
-
 async function getPostsFromDay(startDate, endDate) {
   const posts = await PostModel.find({
     user: { $exists: 1 },
@@ -29,23 +19,17 @@ async function getPostsFromDay(startDate, endDate) {
       likeCount = 0,
     } = post;
 
-    if (blockUsers.includes(username)) {
-      return accu;
-    }
-
     if (!postByUser[username]) {
       postByUser[username] = {
         postsCount: 0,
         commentsCount: 0,
         likeCount: 0,
-        total: 0,
       };
     }
 
     postByUser[username].postsCount += 1;
     postByUser[username].commentsCount += commentsCount;
     postByUser[username].likeCount += likeCount;
-    postByUser[username].total += 1 + commentsCount + likeCount;
 
     return accu;
   }, postByUser);
@@ -53,16 +37,15 @@ async function getPostsFromDay(startDate, endDate) {
   return postByUser;
 }
 
-function getTopPosts(posts, date, limit = 50) {
+function getTopPosts(posts, date) {
   return Object.entries(posts)
-    .sort((a, b) => b[1].total - a[1].total).slice(0, limit)
+    .sort((a, b) => b[1].likeCount - a[1].likeCount)
     .map((item) => ({
       date,
       username: item[0],
       postsCount: item[1].postsCount,
       commentsCount: item[1].commentsCount,
       likeCount: item[1].likeCount,
-      total: item[1].total,
     }));
 }
 
@@ -84,7 +67,9 @@ async function getPostsByDay(lastDays = 30) {
     return getTopPosts(posts, day);
   });
 
-  return postsByDay.filter((items) => items.length).reverse();
+  return postsByDay
+    .filter((items) => items.length)
+    .reverse();
 }
 
 module.exports = getPostsByDay;
