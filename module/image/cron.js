@@ -1,29 +1,31 @@
 const mapSeries = require('async/mapSeries');
-const cron = require('node-cron');
 const debug = require('debug')('app:cron-image');
 
+const { PostModel } = require('../post/model');
 const { openDB } = require('../support/database');
-const getPosts = require('../post/get-posts-for-image-classification');
 const getImageClassification = require('./get-image-classification');
-const savePostClassification = require('../post/save-post-classification');
 const waiter = require('../support/waiter');
 
-async function classifyImages() {
-  const posts = await getPosts();
-  debug(`posts-to-classify:${posts.length}`);
+async function classifyImages(limit = 1000) {
+  const posts = await await PostModel
+    .find({ classification: null })
+    .sort({ createdAt: -1 });
+
+  debug(`posts-to-classify:${limit}/${posts.length}`);
 
   if (!Array.isArray(posts) || !posts.length) {
     return debug('NO_POSTS');
   }
 
   let count = 0;
-  await mapSeries(posts, async (post) => {
+  await mapSeries(posts.slice(0, limit), async (post) => {
     const { id, mediaUrl } = post;
 
     count += 1;
     const classification = await getImageClassification(id, mediaUrl, count);
 
-    await savePostClassification(id, classification);
+    post.classification = classification; // eslint-disable-line
+    post.save();
 
     await waiter();
   });
@@ -34,17 +36,11 @@ async function classifyImages() {
 async function main() {
   await openDB();
 
-  let count = 0;
-  cron.schedule('19 * * * *', async () => {
-    count += 1;
-    debug(`========JOB:imageCron:${count}========`);
-
-    await classifyImages();
-  });
-
   await classifyImages();
 }
 
-main().then(() => {
-  debug('cron setup');
-});
+if (require.main === module) {
+  main().then(() => {
+    debug('end');
+  });
+}

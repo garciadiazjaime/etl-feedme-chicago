@@ -32,4 +32,10 @@ router.get('/posts/classification', cors(), async (req, res) => {
   res.send(classifications);
 });
 
+router.get('/posts/topics', cors(), async (req, res) => {
+  const classifications = await getPostClassification();
+
+  res.send(classifications);
+});
+
 module.exports = router;
