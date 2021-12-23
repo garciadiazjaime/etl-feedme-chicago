@@ -11,7 +11,7 @@
     "d": "git push heroku",
     "a": " heroku accounts:set etl-feedme-chicago",
     "l": " heroku logs",
-    "c:i": "node module/image/cron.js"
+    "c:i": "node module/image/classify-images"
   },
   "keywords": [],
   "author": "",
