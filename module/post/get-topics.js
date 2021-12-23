@@ -12,12 +12,21 @@ function getTopics(post) {
     id,
   } = post;
 
-  const content = [`${caption}.` || ''];
+  if (!caption || !caption.length) {
+    debug(`NO_CAPTION:${id}`);
+    return [];
+  }
 
-  const documents = content.join('.').match(/[^\.!\?]+[\.!\?]+/g); //eslint-disable-line
-  const [topics] = LDA(documents, 1, terms);
+  let documents = `${caption.replace(/\n/g, '.')}.`.match(/[^.!?]+[.!?]+/g);
+  let [topics] = LDA(documents, 1, terms);
 
-  if (!topics) {
+  if (!topics || !topics.length) {
+    // excluding hashtags usually at the end
+    documents = `${caption.replace(/\n/g, '.')}`.match(/[^.!?]+[.!?]+/g);
+    [topics] = LDA(documents, 1, terms);
+  }
+
+  if (!topics || !topics.length) {
     debug(`NO_TOPICS:${id}`);
     return [];
   }
@@ -35,16 +44,16 @@ function getTopics(post) {
   }, []);
 }
 
-async function main(limit = 10000) {
+async function main() {
   await openDB();
 
   const posts = await PostModel.find({ topics: { $exists: false } })
     .sort({ createdAt: -1 });
 
-  debug(`posts:${posts.length}:${limit}`);
+  debug(`posts:${posts.length}`);
   let cont = 1;
 
-  await mapSeries(posts.slice(0, limit), async (post) => {
+  await mapSeries(posts, async (post) => {
     const topics = getTopics(post);
     post.topics = topics; //eslint-disable-line
     await post.save();
