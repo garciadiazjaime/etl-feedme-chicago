@@ -12,7 +12,9 @@ function getPosts(lastDays = 1, limit = 100) {
     classification: {
       $exists: true,
     },
-  }).sort({ createdAt: -1 }).limit(limit);
+  })
+    .sort({ createdAt: -1 })
+    .limit(limit);
 }
 
 module.exports = getPosts;

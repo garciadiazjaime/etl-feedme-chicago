@@ -11,7 +11,7 @@
     "d": "git push heroku",
     "a": " heroku accounts:set etl-feedme-chicago",
     "l": " heroku logs",
-    "cron:image": "node module/image/cron.js"
+    "c:i": "node module/image/cron.js"
   },
   "keywords": [],
   "author": "",
@@ -29,7 +29,8 @@
     "newrelic": "^8.6.0",
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.6",
-    "puppeteer": "^11.0.0"
+    "puppeteer": "^11.0.0",
+    "stem-porter": "0.0.1"
   },
   "devDependencies": {
     "eslint": "^8.2.0",

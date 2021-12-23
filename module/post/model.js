@@ -44,6 +44,7 @@ const PostSchema = new Schema({
   location: LocationSchema,
   likers: [UserSchema],
   classification: [ClasificationSchema],
+  topics: [ClasificationSchema],
 }, {
   timestamps: true,
 });

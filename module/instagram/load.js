@@ -4,6 +4,7 @@ const debug = require('debug')('app:load');
 const { PostModel } = require('../post/model');
 const { saveJSON } = require('../support/file');
 const uploadImage = require('../image/upload-image');
+const getTopics = require('../post/get-topics');
 
 async function load(posts, hashtag, count) {
   if (!Array.isArray(posts) || !posts.length) {
@@ -28,6 +29,7 @@ async function load(posts, hashtag, count) {
       ...post,
       classification: null,
       imageUrl: imageResponse && imageResponse.url ? imageResponse.url : '',
+      topics: getTopics(post),
     }, {
       upsert: true,
     });
