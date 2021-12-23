@@ -5,6 +5,7 @@ const getPostsByDay = require('./get-posts-by-day');
 const getPostsSummary = require('./get-posts-summary');
 const getPost = require('./get-posts');
 const getPostClassification = require('./get-post-classification');
+const getPostTopics = require('./get-post-topics');
 
 const router = express.Router();
 
@@ -33,9 +34,9 @@ router.get('/posts/classification', cors(), async (req, res) => {
 });
 
 router.get('/posts/topics', cors(), async (req, res) => {
-  const classifications = await getPostClassification();
+  const topics = await getPostTopics();
 
-  res.send(classifications);
+  res.send(topics);
 });
 
 module.exports = router;
