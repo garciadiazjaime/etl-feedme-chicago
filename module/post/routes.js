@@ -6,6 +6,7 @@ const getPostsSummary = require('./get-posts-summary');
 const getPost = require('./get-posts');
 const getPostClassification = require('./get-post-classification');
 const getPostTopics = require('./get-post-topics');
+const getPostHashtags = require('./get-post-hashtags');
 
 const router = express.Router();
 
@@ -37,6 +38,12 @@ router.get('/posts/topics', cors(), async (req, res) => {
   const topics = await getPostTopics();
 
   res.send(topics);
+});
+
+router.get('/posts/hashtags', cors(), async (req, res) => {
+  const hashtags = await getPostHashtags();
+
+  res.send(hashtags);
 });
 
 module.exports = router;

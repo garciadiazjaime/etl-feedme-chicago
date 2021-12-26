@@ -1,7 +1,14 @@
 const { PostModel } = require('./model');
 
-async function getPostClassification(limit = 10000) {
+async function getPostClassification(lastDays = 30, limit = 10000) {
+  const now = new Date();
+  const startDate = new Date(now);
+  startDate.setDate(startDate.getDate() - lastDays);
+
   const posts = await PostModel.find({
+    createdAt: {
+      $gte: startDate,
+    },
     $and: [
       {
         classification: {

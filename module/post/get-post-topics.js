@@ -1,7 +1,14 @@
 const { PostModel } = require('./model');
 
-async function getPostTopics(limit = 10000) {
+async function getPostTopics(lastDays = 30, limit = 10000) {
+  const now = new Date();
+  const startDate = new Date(now);
+  startDate.setDate(startDate.getDate() - lastDays);
+
   const posts = await PostModel.find({
+    createdAt: {
+      $gte: startDate,
+    },
     topics: {
       $ne: [],
     },
