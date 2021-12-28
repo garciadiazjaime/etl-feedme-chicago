@@ -27,8 +27,8 @@ app.listen(PORT, async () => {
   debug(`Listening on ${PORT}`);
 
   await openDB();
-  resetFolder(publicPath);
-  await setupCron();
+  // resetFolder(publicPath);
+  // await setupCron();
 
   return null;
 });

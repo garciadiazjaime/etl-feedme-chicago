@@ -48,7 +48,7 @@ async function getPostClassification(lastDays = 30, limit = 10000) {
     }))
     .sort((a, b) => b.total - a.total);
 
-  const threshold = Math.round(sorted[0].total * 0.01);
+  const threshold = Math.round(sorted[0].total * 0.05);
 
   return sorted.filter((item) => item.total > threshold);
 }
