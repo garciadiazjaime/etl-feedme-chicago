@@ -8,6 +8,7 @@ const getPostClassification = require('./get-post-classification');
 const getPostTopics = require('./get-post-topics');
 const getPostHashtags = require('./get-post-hashtags');
 const getPostsUsers = require('./get-posts-users');
+const getUsersLikes = require('./get-users-likes');
 
 const router = express.Router();
 
@@ -51,6 +52,12 @@ router.get('/posts/users', cors(), async (req, res) => {
   const postsbyUser = await getPostsUsers();
 
   res.send(postsbyUser);
+});
+
+router.get('/posts/likes', cors(), async (req, res) => {
+  const usersLikes = await getUsersLikes();
+
+  res.send(usersLikes);
 });
 
 module.exports = router;
