@@ -6,7 +6,7 @@ const { openDB } = require('../support/database');
 const getImageClassification = require('./get-image-classification');
 const waiter = require('../support/waiter');
 
-async function classifyImages(limit = 1000) {
+async function classifyImages(limit = 600) {
   const posts = await await PostModel
     .find({ classification: null })
     .sort({ createdAt: -1 });
@@ -19,10 +19,10 @@ async function classifyImages(limit = 1000) {
 
   let count = 0;
   await mapSeries(posts.slice(0, limit), async (post) => {
-    const { id, mediaUrl } = post;
+    const { id, imageUrl } = post;
 
     count += 1;
-    const classification = await getImageClassification(id, mediaUrl, count);
+    const classification = await getImageClassification(id, imageUrl, count);
 
     post.classification = classification; // eslint-disable-line
     post.save();

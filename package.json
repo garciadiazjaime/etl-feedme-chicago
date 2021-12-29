@@ -27,6 +27,7 @@
     "mongoose": "^6.0.13",
     "morgan": "^1.10.0",
     "newrelic": "^8.6.0",
+    "node-cache": "^5.1.2",
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.6",
     "puppeteer": "^11.0.0",

@@ -51,6 +51,15 @@ const PostSchema = new Schema({
 
 const PostModel = mongoose.model('postRaw', PostSchema);
 
+const PublishSchema = new Schema({
+  id: String,
+  username: String,
+}, {
+  timestamps: true,
+});
+const PublishModel = mongoose.model('publish', PublishSchema);
+
 module.exports = {
   PostModel,
+  PublishModel,
 };

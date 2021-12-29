@@ -1,6 +1,6 @@
 const { PostModel } = require('./model');
 
-async function getUsersLikes(lastDays = 30, limit = 10000) {
+async function getUsersLikes(lastDays = 30, limit = 9000) {
   const now = new Date();
   const startDate = new Date(now);
   startDate.setDate(startDate.getDate() - lastDays);
@@ -14,8 +14,8 @@ async function getUsersLikes(lastDays = 30, limit = 10000) {
     'user.username': true,
     likeCount: true,
   })
-    .sort({ createdAt: -1 })
-    .limit(limit);
+    .limit(limit)
+    .sort({ createdAt: -1 });
 
   const usersLikes = posts.reduce((accu, post) => {
     const { username } = post.user;
