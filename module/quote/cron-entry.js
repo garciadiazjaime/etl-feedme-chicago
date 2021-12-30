@@ -18,11 +18,7 @@ function getQueryFromPreview(postPreview) {
   return postPreview.posts[0].classification[0].className.split(',')[0];
 }
 
-async function main() {
-  const postPreview = await getPostPreview();
-
-  const query = getQueryFromPreview(postPreview);
-
+async function savedQuotes(query) {
   const documents = await QuoteModel.find({ query }).count();
   if (documents > 0) {
     return debug(`already-saved:${query}`);
@@ -41,4 +37,13 @@ async function main() {
   return debug(`${quotes.length}:saved`);
 }
 
+async function main() {
+  const postPreview = await getPostPreview();
+
+  const query = getQueryFromPreview(postPreview);
+
+  return savedQuotes(query);
+}
+
 module.exports = main;
+module.exports.savedQuotes = savedQuotes;

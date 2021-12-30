@@ -1,11 +1,13 @@
 const puppeteer = require('puppeteer');
+const debug = require('debug')('app:brainyquote');
 
-async function getQuote() {
+async function getQuote(query) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  const query = encodeURIComponent('ice cream');
-  await page.goto(`https://www.brainyquote.com/search_results?q=${query}`);
+  const url = `https://www.brainyquote.com/search_results?q=${encodeURIComponent(query)}`;
+  await page.goto(url);
+  debug(url);
 
   const result = await page.evaluate(() => {
     const quotes = [];

@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const { setupCron } = require('./module/support/cron');
 const { openDB } = require('./module/support/database');
 const postRoutes = require('./module/post/routes');
+const quoteRoutes = require('./module/quote/routes');
 const { resetFolder } = require('./module/support/folder');
 const config = require('./config');
 
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('', postRoutes);
+app.use('', quoteRoutes);
 
 app.listen(PORT, async () => {
   debug(`Listening on ${PORT}`);
