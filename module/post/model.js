@@ -54,6 +54,8 @@ const PostModel = mongoose.model('postRaw', PostSchema);
 const PublishSchema = new Schema({
   id: String,
   username: String,
+  imageURL: String,
+  caption: String,
 }, {
   timestamps: true,
 });

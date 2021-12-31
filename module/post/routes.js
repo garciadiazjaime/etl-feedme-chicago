@@ -10,6 +10,7 @@ const getPostHashtags = require('./get-post-hashtags');
 const getPostsUsers = require('./get-posts-users');
 const getUsersLikes = require('./get-users-likes');
 const getPostPreview = require('./get-post-preview');
+const schedulePost = require('./schedule-post');
 
 const router = express.Router();
 
@@ -65,6 +66,19 @@ router.get('/posts/preview', cors(), async (req, res) => {
   const postPreview = await getPostPreview();
 
   res.send(postPreview);
+});
+
+router.options('/posts/schedule', cors());
+router.post('/posts/schedule', cors(), async (req, res) => {
+  const {
+    id, username, imageURL, caption,
+  } = req.body;
+
+  const response = await schedulePost(id, username, imageURL, caption);
+
+  res.send({
+    status: !!response,
+  });
 });
 
 module.exports = router;

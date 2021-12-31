@@ -28,7 +28,7 @@ async function getUserUnpublished(users, index, startDate) {
   });
 
   if (publish.length) {
-    return getUserUnpublished(users, index + 1);
+    return getUserUnpublished(users, index + 1, startDate);
   }
 
   return users[index];

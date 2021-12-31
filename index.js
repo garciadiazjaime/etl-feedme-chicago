@@ -12,6 +12,8 @@ const config = require('./config');
 
 const PORT = config.get('port');
 const app = express();
+app.use(express.json());
+
 app.use(morgan('combined'));
 
 const publicPath = config.get('publicPath');
