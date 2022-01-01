@@ -5,7 +5,7 @@ async function getQuote(query) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  const url = `https://www.brainyquote.com/search_results?q=${encodeURIComponent(query)}`;
+  const url = `https://www.brainyquote.com/search_results?q=${query}`;
   await page.goto(url);
   debug(url);
 

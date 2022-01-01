@@ -1,12 +1,9 @@
-const NodeCache = require('node-cache');
-
 const getUsersLikes = require('./get-users-likes');
 const { PostModel, PublishModel } = require('./model');
 
-const myCache = new NodeCache();
-
 const blockUsers = [
   'jana_berlin.food',
+  'wilmasfoodandnature',
 ];
 
 async function getUserUnpublished(users, index, startDate) {
@@ -20,14 +17,14 @@ async function getUserUnpublished(users, index, startDate) {
 
   const { username } = users[index];
 
-  const publish = await PublishModel.find({
+  const documents = await PublishModel.count({
     username,
     createdAt: {
       $gte: startDate,
     },
   });
 
-  if (publish.length) {
+  if (documents) {
     return getUserUnpublished(users, index + 1, startDate);
   }
 
@@ -35,12 +32,6 @@ async function getUserUnpublished(users, index, startDate) {
 }
 
 async function getPostPreview(lastDays = 30) {
-  const cacheKey = 'getPostPreview';
-  const response = myCache.get(cacheKey);
-  if (response) {
-    return response;
-  }
-
   const userLikes = await getUsersLikes();
   const users = userLikes.filter((item) => !blockUsers.includes(item.username));
 
@@ -60,15 +51,12 @@ async function getPostPreview(lastDays = 30) {
     },
   })
     .sort({ likeCount: -1, createdAt: -1 })
-    .limit(3);
+    .limit(5);
 
   const preview = {
     user,
     posts,
   };
-
-  const cacheExpiresDay = 1 * 60 * 60 * 24;
-  myCache.set(cacheKey, JSON.stringify(preview), cacheExpiresDay);
 
   return preview;
 }

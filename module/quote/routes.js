@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/quote', cors(), async (req, res) => {
   const { query } = req.query;
 
-  const quote = await getQuote(query);
+  const quote = await getQuote(decodeURIComponent(query));
 
   res.send(quote || {});
 });
