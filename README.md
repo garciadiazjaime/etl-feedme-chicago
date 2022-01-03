@@ -39,3 +39,9 @@ How to set an environment variable
 ```
 heroku config:set GITHUB_USERNAME=diegorivera
 ```
+
+Stop app
+
+```
+heroku ps:scale web=0
+```
