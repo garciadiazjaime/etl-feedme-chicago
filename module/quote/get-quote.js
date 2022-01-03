@@ -1,5 +1,5 @@
 const { QuoteModel } = require('./model');
-const { savedQuotes } = require('./cron-entry');
+const quoteETL = require('./etl');
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -13,7 +13,7 @@ async function getQuote(query) {
     return quotes[index];
   }
 
-  await savedQuotes(query);
+  await quoteETL(query);
 
   quotes = await QuoteModel.find({ query });
 
