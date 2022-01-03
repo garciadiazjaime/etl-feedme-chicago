@@ -2,6 +2,9 @@ const getUsersLikes = require('./get-users-likes');
 const { PostModel, PublishModel } = require('./model');
 
 const blockUsers = [
+  'jeffmauro',
+  'estephymusic',
+  'bears_alliance',
   'jana_berlin.food',
   'wilmasfoodandnature',
 ];
@@ -51,7 +54,7 @@ async function getPostPreview(lastDays = 30) {
     },
   })
     .sort({ likeCount: -1, createdAt: -1 })
-    .limit(5);
+    .limit(7);
 
   const preview = {
     user,
