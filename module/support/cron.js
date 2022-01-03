@@ -41,8 +41,6 @@ async function setupCron() {
 
   await postCron(page, prodCount);
 
-  await publishCron();
-
   return debug('CRON_SETUP');
 }
 
