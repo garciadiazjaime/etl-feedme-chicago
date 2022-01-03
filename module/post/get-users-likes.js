@@ -11,6 +11,9 @@ async function getUsersLikes(lastDays = 30, limit = 100) {
         createdAt: {
           $gte: startDate,
         },
+        imageUrl: {
+          $exists: true,
+        },
       },
     }, {
       $group: {
