@@ -76,6 +76,10 @@ const config = convict({
       env: 'CLOUDINARY_SECRET',
     },
   },
+  publishService: {
+    default: '',
+    env: 'PUBLISH_SERVICE_URL',
+  },
 });
 
 // Perform validation

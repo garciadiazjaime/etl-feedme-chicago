@@ -56,6 +56,7 @@ const PublishSchema = new Schema({
   username: String,
   imageURL: String,
   caption: String,
+  published: Boolean,
 }, {
   timestamps: true,
 });

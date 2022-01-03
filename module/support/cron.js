@@ -3,6 +3,7 @@ const debug = require('debug')('app:cron');
 
 const login = require('../instagram/login');
 const postCron = require('../instagram/cron-entry');
+const publishCron = require('../instagram/cron-publish');
 const { getPage } = require('./page');
 const { ping } = require('./heroku');
 
@@ -32,9 +33,15 @@ async function setupCron() {
     await ping();
   });
 
+  cron.schedule('17 10 * * *', async () => {
+    await publishCron();
+  });
+
   await ping();
 
   await postCron(page, prodCount);
+
+  await publishCron();
 
   return debug('CRON_SETUP');
 }
