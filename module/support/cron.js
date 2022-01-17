@@ -22,7 +22,7 @@ async function setupCron() {
 
   let prodCount = 0;
 
-  cron.schedule('7 */1 * * *', async () => {
+  cron.schedule('7 * * * *', async () => {
     prodCount += 1;
     debug(`========JOB:postCron:${prodCount}========`);
 

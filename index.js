@@ -33,6 +33,4 @@ app.listen(PORT, async () => {
   await openDB();
   resetFolder(publicPath);
   await setupCron();
-
-  return null;
 });

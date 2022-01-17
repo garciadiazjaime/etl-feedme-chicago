@@ -22,18 +22,21 @@ async function main() {
 
   const post = documents[0];
 
+  debug(post.imageURL);
+
   const url = config.get('publishService');
   const response = await fetch(`${url}?imageURL=${adjustProtocol(post.imageURL)}&caption=${post.caption}`);
   const data = await response.json();
 
-  if (!data.published) {
-    return debug('ERROR_PUBLISHING');
+  const { published } = data;
+  post.published = published;
+  if (!published) {
+    debug('ERROR_PUBLISHING');
   }
 
-  post.published = true;
   await post.save();
 
-  return debug(`published:${post.id}`);
+  return debug(`published:${published}:${post.id}`);
 }
 
 module.exports = main;

@@ -7,6 +7,7 @@ const blockUsers = [
   'bears_alliance',
   'jana_berlin.food',
   'wilmasfoodandnature',
+  'the_chicago_conservative',
 ];
 
 async function getUserUnpublished(users, index, startDate) {
