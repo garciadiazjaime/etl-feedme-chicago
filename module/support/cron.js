@@ -39,9 +39,6 @@ async function setupCron() {
 
   await ping();
 
-  await postCron(page, prodCount);
-  await publishCron();
-
   return debug('CRON_SETUP');
 }
 
