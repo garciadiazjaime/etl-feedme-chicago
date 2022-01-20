@@ -3,10 +3,16 @@ const { PostModel, PublishModel } = require('./model');
 
 const blockUsers = [
   'jeffmauro',
+  'md.food.blog',
   'estephymusic',
+  'andreanmakeup',
+  'eatsbyarchita',
   'bears_alliance',
+  'chicago.explore',
   'jana_berlin.food',
+  'jana_berlin_food',
   'wilmasfoodandnature',
+  'overheard_in_chicago',
   'the_chicago_conservative',
 ];
 
