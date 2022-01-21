@@ -6,7 +6,7 @@ const load = require('./load');
 
 const config = require('../../config');
 
-async function main(page, count) {
+async function main(page, count = 0) {
   const hashtags = config.get('instagram.hashtags').split(',');
 
   await mapSeries(hashtags, async (hashtag) => {
