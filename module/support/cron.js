@@ -33,7 +33,7 @@ async function setupCron() {
     await ping();
   });
 
-  cron.schedule('17 10 * * *', async () => {
+  cron.schedule('17 17 * * *', async () => {
     await publishCron();
   });
 
