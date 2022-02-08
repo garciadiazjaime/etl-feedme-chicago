@@ -2,14 +2,18 @@ const getUsersLikes = require('./get-users-likes');
 const { PostModel, PublishModel } = require('./model');
 
 const blockUsers = [
+  'ceedays',
   'jeffmauro',
+  '_weloveusa',
   'md.food.blog',
   'estephymusic',
   'andreanmakeup',
   'eatsbyarchita',
   'bears_alliance',
+  'chef.joe.sasto',
   'chicago.explore',
   'jana_berlin.food',
+  'bloomtime.coffee',
   'jana_berlin_food',
   'wilmasfoodandnature',
   'overheard_in_chicago',
