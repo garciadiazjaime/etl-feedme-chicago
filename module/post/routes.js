@@ -10,6 +10,7 @@ const getPostHashtags = require('./get-post-hashtags');
 const getPostsUsers = require('./get-posts-users');
 const getUsersLikes = require('./get-users-likes');
 const getPostPreview = require('./get-post-preview');
+const getPostByCategory = require('./get-posts-by-category');
 const schedulePost = require('./schedule-post');
 
 const router = express.Router();
@@ -79,6 +80,14 @@ router.post('/posts/schedule', cors(), async (req, res) => {
   res.send({
     status: !!response,
   });
+});
+
+router.get('/posts/by-category', cors(), async (req, res) => {
+  const source = 'tijuanamakesmehungry';
+  const { category, limit = 4 } = req.query;
+  const posts = await getPostByCategory(category, source, parseInt(limit, 10));
+
+  res.send(posts);
 });
 
 module.exports = router;

@@ -49,6 +49,8 @@ const PostSchema = new Schema({
   timestamps: true,
 });
 
+PostSchema.index({ caption: 'text' });
+
 const PostModel = mongoose.model('postRaw', PostSchema);
 
 const PublishSchema = new Schema({
